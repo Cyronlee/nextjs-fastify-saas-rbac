@@ -40,3 +40,4 @@ yarn-error.log*
 TODO.md
 private_key.*
 public_key.*
+.idea
