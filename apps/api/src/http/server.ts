@@ -58,7 +58,8 @@ import { getProjects } from './routes/projects/get-projects'
 import { updateProject } from './routes/projects/update-project'
 import { uploadAvatar } from './routes/upload-avatar'
 
-const app = fastify().withTypeProvider<ZodTypeProvider>()
+const app =
+	fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
@@ -68,7 +69,8 @@ app.register(fastifySwagger, {
 	openapi: {
 		info: {
 			title: 'Next.js Fastify Saas RBAC',
-			description: 'Full-stack SaaS app with multi-tenant and RBAC.',
+			description:
+				'Full-stack SaaS app with multi-tenant and RBAC.',
 			version: '1.0.0',
 		},
 		components: {
@@ -92,8 +94,14 @@ app.register(fastifyCors)
 
 app.register(fastifyJwt, {
 	secret: {
-		public: Buffer.from(env.JWT_PUBLIC_KEY, 'base64'),
-		private: Buffer.from(env.JWT_SECRET_KEY, 'base64'),
+		public: Buffer.from(
+			env.JWT_PUBLIC_KEY,
+			'base64'
+		),
+		private: Buffer.from(
+			env.JWT_SECRET_KEY,
+			'base64'
+		),
 	},
 	sign: {
 		algorithm: 'RS256',
@@ -153,5 +161,12 @@ app.register(getProjects)
 app.register(updateProject)
 
 app.register(uploadAvatar)
+
+app.listen({
+	port: env.PORT,
+	host: '0.0.0.0',
+}).then(() =>
+	console.log('✅ HTTP server is running.')
+)
 
 export { app }
