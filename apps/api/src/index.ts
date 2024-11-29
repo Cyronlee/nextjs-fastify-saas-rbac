@@ -1,4 +1,4 @@
-import { app } from '../src/http/server'
+import { app } from './http/server'
 
 export default async (req, res) => {
 	await app.ready()
