@@ -58,105 +58,113 @@ import { getProjects } from './routes/projects/get-projects'
 import { updateProject } from './routes/projects/update-project'
 import { uploadAvatar } from './routes/upload-avatar'
 
-const app = fastify().withTypeProvider<ZodTypeProvider>()
+export function createServer() {
+  const app = fastify().withTypeProvider<ZodTypeProvider>()
 
-app.setSerializerCompiler(serializerCompiler)
-app.setValidatorCompiler(validatorCompiler)
-app.setErrorHandler(errorHandler)
+  app.setSerializerCompiler(serializerCompiler)
+  app.setValidatorCompiler(validatorCompiler)
+  app.setErrorHandler(errorHandler)
 
-app.register(fastifySwagger, {
-	openapi: {
-		info: {
-			title: 'Next.js Fastify Saas RBAC',
-			description: 'Full-stack SaaS app with multi-tenant and RBAC.',
-			version: '1.0.0',
-		},
-		components: {
-			securitySchemes: {
-				bearerAuth: {
-					type: 'http',
-					scheme: 'bearer',
-					bearerFormat: 'JWT',
-				},
-			},
-		},
-	},
-	transform: jsonSchemaTransform,
-})
+  app.register(fastifySwagger, {
+    openapi: {
+      info: {
+        title: 'Next.js Fastify Saas RBAC',
+        description: 'Full-stack SaaS app with multi-tenant and RBAC.',
+        version: '1.0.0',
+      },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+          },
+        },
+      },
+    },
+    transform: jsonSchemaTransform,
+  })
 
-app.register(fastifySwaggerUi, {
-	routePrefix: '/docs',
-})
+  app.register(fastifySwaggerUi, {
+    routePrefix: '/docs',
+  })
 
-app.register(fastifyCors)
+  app.register(fastifyCors)
 
-app.register(fastifyJwt, {
-	secret: {
-		public: Buffer.from(env.JWT_PUBLIC_KEY, 'base64'),
-		private: Buffer.from(env.JWT_SECRET_KEY, 'base64'),
-	},
-	sign: {
-		algorithm: 'RS256',
-	},
-})
+  app.register(fastifyJwt, {
+    secret: {
+      public: Buffer.from(env.JWT_PUBLIC_KEY, 'base64'),
+      private: Buffer.from(env.JWT_SECRET_KEY, 'base64'),
+    },
+    sign: {
+      algorithm: 'RS256',
+    },
+  })
 
-app.register(createAccount)
-app.register(authenticateWithPassword)
-app.register(authenticateWithGitHub)
-app.register(authenticateWithGoogle)
-app.register(requestPasswordRecover)
-app.register(resetPassword)
-app.register(verifyEmailAndAuthenticate)
-app.register(resendEmailValidationCode)
+  app.register(createAccount)
+  app.register(authenticateWithPassword)
+  app.register(authenticateWithGitHub)
+  app.register(authenticateWithGoogle)
+  app.register(requestPasswordRecover)
+  app.register(resetPassword)
+  app.register(verifyEmailAndAuthenticate)
+  app.register(resendEmailValidationCode)
 
-app.register(getProfile)
-app.register(updateAccount)
-app.register(updatePassword)
-app.register(removeAccountProvider)
-app.register(leaveOrganization)
-app.register(deleteAccount)
-app.register(checkEmailChange)
-app.register(deleteEmailChangeToken)
-app.register(confirmEmailChangeToken)
+  app.register(getProfile)
+  app.register(updateAccount)
+  app.register(updatePassword)
+  app.register(removeAccountProvider)
+  app.register(leaveOrganization)
+  app.register(deleteAccount)
+  app.register(checkEmailChange)
+  app.register(deleteEmailChangeToken)
+  app.register(confirmEmailChangeToken)
 
-app.register(connectGitHub)
-app.register(connectGoogle)
+  app.register(connectGitHub)
+  app.register(connectGoogle)
 
-app.register(creteOrganization)
-app.register(getMemebership)
-app.register(getOrganizations)
-app.register(getOrganization)
-app.register(updateOrganization)
-app.register(shutdownOrganization)
-app.register(transferOrganization)
-app.register(authorizeDomain)
-app.register(removeDomain)
+  app.register(creteOrganization)
+  app.register(getMemebership)
+  app.register(getOrganizations)
+  app.register(getOrganization)
+  app.register(updateOrganization)
+  app.register(shutdownOrganization)
+  app.register(transferOrganization)
+  app.register(authorizeDomain)
+  app.register(removeDomain)
 
-app.register(getMembers)
-app.register(updateMember)
-app.register(removeMember)
+  app.register(getMembers)
+  app.register(updateMember)
+  app.register(removeMember)
 
-app.register(createInvite)
-app.register(getInvites)
-app.register(getInvite)
-app.register(acceptInvite)
-app.register(rejectInvite)
-app.register(revokeInvite)
-app.register(getPendingInvites)
+  app.register(createInvite)
+  app.register(getInvites)
+  app.register(getInvite)
+  app.register(acceptInvite)
+  app.register(rejectInvite)
+  app.register(revokeInvite)
+  app.register(getPendingInvites)
 
-app.register(getOrganizationBilling)
+  app.register(getOrganizationBilling)
 
-app.register(createProject)
-app.register(deleteProject)
-app.register(getProject)
-app.register(getProjects)
-app.register(updateProject)
+  app.register(createProject)
+  app.register(deleteProject)
+  app.register(getProject)
+  app.register(getProjects)
+  app.register(updateProject)
 
-app.register(uploadAvatar)
+  app.register(uploadAvatar)
 
-app
-	.listen({
-		port: env.PORT,
-		host: '0.0.0.0',
-	})
-	.then(() => console.log('✅ HTTP server is running.'))
+  return app
+}
+
+// Only start the server if this file is run directly
+if (require.main === module) {
+  const app = createServer()
+  app
+    .listen({
+      port: env.PORT,
+      host: '0.0.0.0',
+    })
+    .then(() => console.log('✅ HTTP server is running.'))
+}

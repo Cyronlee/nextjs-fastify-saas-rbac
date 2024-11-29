@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"scripts": {
 		"start": "node dist/http/server.js",
-		"build": "tsup",
+		"build": "tsup src/api/index.ts src/http/server.ts --format cjs --dts",
 		"postinstall": "pnpm prisma generate",
 		"dev": "pnpm env:load tsx watch src/http/server.ts",
 		"db:migrate": "pnpm env:load prisma migrate dev",
