@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/schemas/account-providers-schema.ts"],"sourcesContent":["import z from 'zod'\n\nexport const accountProvidersSchema = z.enum(['GITHUB', 'GOOGLE'])\n"],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAAc;AAEP,IAAM,yBAAyB,WAAAA,QAAE,KAAK,CAAC,UAAU,QAAQ,CAAC;","names":["z"]}
